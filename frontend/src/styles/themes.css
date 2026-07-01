@@ -1,0 +1,29 @@
+:root {
+
+  --background: #F8FAFC;
+  --surface: #FFFFFF;
+
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+
+  --border: #E5E7EB;
+
+}
+
+[data-theme="sunset"] {
+
+  --background: #F7F1EB;
+  --surface: #FFF9F5;
+
+  --primary: #C96B4A;
+  --primary-hover: #B85B3E;
+
+  --text-primary: #3E3028;
+  --text-secondary: #7A6659;
+
+  --border: #E8D8CC;
+
+}
