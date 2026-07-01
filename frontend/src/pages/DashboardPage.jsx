@@ -1,35 +1,94 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  CheckCircle2,
+  Clock3,
+  ClipboardList,
+} from "lucide-react";
 
-import { AuthContext } from "../context/AuthContext";
-import Button from "../components/common/Button";
+import DashboardLayout from "../layouts/DashboardLayout";
+
+import taskService from "../services/task.service";
+
+import WelcomeCard from "../components/dashboard/WelcomeCard";
+import StatsCard from "../components/dashboard/StatsCard";
+import DashboardSkeleton from "../components/dashboard/DashboardSkeleton";
+import RecentTasks from "../components/dashboard/RecentTasks";
 
 const DashboardPage = () => {
-  const { user, logout } = useContext(AuthContext);
+  const [tasks, setTasks] = useState([]);
 
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const data = await taskService.getTasks();
+
+      setTasks(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <DashboardSkeleton />
+      </DashboardLayout>
+    );
+  }
+
+  const total = tasks.length;
+
+  const pending = tasks.filter(
+    (task) => task.status === "PENDING"
+  ).length;
+
+  const completed = tasks.filter(
+    (task) => task.status === "COMPLETED"
+  ).length;
+
   return (
-    <div className="min-h-screen bg-background p-10">
-      <h1 className="text-4xl font-bold">
-        Welcome {user?.name}
-      </h1>
+    <DashboardLayout>
 
-      <p className="mt-2 text-text-secondary">
-        {user?.email}
-      </p>
+      <div className="space-y-8">
 
-      <div className="mt-8 w-40">
-        <Button onClick={handleLogout}>
-          Logout
-        </Button>
+        <WelcomeCard />
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+
+          <StatsCard
+            title="Total Tasks"
+            count={total}
+            icon={ClipboardList}
+          />
+
+          <StatsCard
+            title="Pending"
+            count={pending}
+            icon={Clock3}
+          />
+
+          <StatsCard
+            title="Completed"
+            count={completed}
+            icon={CheckCircle2}
+          />
+
+        </div>
+
+        <RecentTasks
+          tasks={tasks.slice(0, 5)}
+        />
+
       </div>
-    </div>
+
+    </DashboardLayout>
   );
 };
 

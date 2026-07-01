@@ -1,11 +1,19 @@
 import { Task } from "../domain/index.js";
 
 const createTask = async (userId, taskData) => {
+  const {
+    title,
+    description,
+    status,
+    dueDate,
+  } = taskData;
+
   return await Task.create({
     userId,
-    title: taskData.title,
-    description: taskData.description,
-    dueDate: taskData.dueDate,
+    title,
+    description,
+    status,
+    dueDate,
   });
 };
 
