@@ -7,6 +7,8 @@ const TaskToolbar = ({
   setSearch,
   filter,
   setFilter,
+  sortBy,
+  setSortBy,
   onCreate,
 }) => {
   return (

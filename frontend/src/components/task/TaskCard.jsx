@@ -4,6 +4,9 @@ import {
   Calendar,
 } from "lucide-react";
 
+import StatusBadge from "../common/StatusBadge";
+
+
 const TaskCard = ({
   task,
   onEdit,
@@ -26,15 +29,19 @@ const TaskCard = ({
 
         </div>
 
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${
-            task.status === "COMPLETED"
-              ? "bg-green-100 text-green-700"
-              : "bg-yellow-100 text-yellow-700"
-          }`}
-        >
-          {task.status}
-        </span>
+        <StatusBadge status={task.status} />
+
+      </div>
+
+      <div className="mt-6 flex items-center justify-between">
+
+        <div className="flex items-center gap-2 text-text-secondary">
+
+          <Calendar size={16} />
+
+          {task.dueDate}
+
+        </div>
 
       </div>
 

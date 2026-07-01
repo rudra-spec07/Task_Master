@@ -18,6 +18,8 @@ const TasksPage = () => {
 
   const [filter, setFilter] =
     useState("ALL");
+    const [sortBy, setSortBy] =
+  useState("newest");
 
     const [openCreate, setOpenCreate] =
   useState(false);
@@ -42,23 +44,31 @@ const [openDelete, setOpenDelete] =
     setTasks(data);
   };
 
-  const filteredTasks = tasks.filter(
-    (task) => {
-      const matchesSearch =
-        task.title
-          .toLowerCase()
-          .includes(search.toLowerCase());
+  const filteredTasks = [...tasks]
+  .filter((task) => {
+    const matchesSearch =
+      task.title
+        .toLowerCase()
+        .includes(search.toLowerCase());
 
-      const matchesFilter =
-        filter === "ALL" ||
-        task.status === filter;
+    const matchesFilter =
+      filter === "ALL" ||
+      task.status === filter;
 
-      return (
-        matchesSearch &&
-        matchesFilter
-      );
+    return matchesSearch && matchesFilter;
+  })
+  .sort((a, b) => {
+    if (sortBy === "oldest") {
+      return new Date(a.createdAt) - new Date(b.createdAt);
     }
-  );
+
+    if (sortBy === "due") {
+      return new Date(a.dueDate) - new Date(b.dueDate);
+    }
+
+    // newest default
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
 
   return (
     <DashboardLayout>
