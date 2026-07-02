@@ -4,6 +4,12 @@ import { ROLES } from "../constants/roles.js";
 import { AUTH_MESSAGES } from "../utils/messages.js";
 import { generateToken } from "../utils/jwt.js";
 
+const createAuthError = (message, statusCode = 401) => {
+  const error = new Error(message);
+  error.statusCode = statusCode;
+  return error;
+};
+
 const register = async ({ name, email, password }) => {
   email = email.toLowerCase();
 
@@ -12,7 +18,7 @@ const register = async ({ name, email, password }) => {
   });
 
   if (existingUser) {
-    throw new Error(AUTH_MESSAGES.EMAIL_EXISTS);
+    throw createAuthError(AUTH_MESSAGES.EMAIL_EXISTS, 409);
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -41,11 +47,11 @@ const login = async ({ email, password }) => {
   });
 
   if (!user) {
-    throw new Error(AUTH_MESSAGES.INVALID_CREDENTIALS);
+    throw createAuthError(AUTH_MESSAGES.INVALID_CREDENTIALS);
   }
 
   if (!user.isActive) {
-    throw new Error(AUTH_MESSAGES.ACCOUNT_INACTIVE);
+    throw createAuthError(AUTH_MESSAGES.ACCOUNT_INACTIVE, 403);
   }
 
   const isPasswordMatched = await bcrypt.compare(
@@ -54,7 +60,7 @@ const login = async ({ email, password }) => {
   );
 
   if (!isPasswordMatched) {
-    throw new Error(AUTH_MESSAGES.INVALID_CREDENTIALS);
+    throw createAuthError(AUTH_MESSAGES.INVALID_CREDENTIALS);
   }
 
   const token = generateToken({
@@ -89,7 +95,7 @@ const getProfile = async (userId) => {
   });
 
   if (!user) {
-    throw new Error(AUTH_MESSAGES.USER_NOT_FOUND);
+    throw createAuthError(AUTH_MESSAGES.USER_NOT_FOUND, 404);
   }
 
   return user;

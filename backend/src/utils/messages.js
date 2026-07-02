@@ -1,6 +1,10 @@
 export const AUTH_MESSAGES = {
   REGISTER_SUCCESS: "User registered successfully.",
   LOGIN_SUCCESS: "Login successful.",
+  INVALID_CREDENTIALS: "Invalid credentials.",
+  ACCOUNT_INACTIVE: "Your account is inactive. Please contact support.",
+  USER_NOT_FOUND: "User not found.",
+  EMAIL_EXISTS: "Email already exists.",
 };
 
 export const TASK_MESSAGES = {
