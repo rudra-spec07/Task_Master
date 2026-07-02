@@ -34,8 +34,42 @@ const me = asyncHandler(async (req, res) => {
   );
 });
 
+const updateProfile = asyncHandler(
+  async (req, res) => {
+    const user =
+      await authService.updateProfile(
+        req.user.id,
+        req.body
+      );
+
+    return sendSuccess(
+      res,
+      "Profile updated successfully.",
+      user
+    );
+  }
+);
+
+const changePassword =
+  asyncHandler(async (req, res) => {
+    await authService.changePassword(
+      req.user.id,
+      req.body
+    );
+
+    return sendSuccess(
+      res,
+      "Password changed successfully."
+    );
+  });
+
+
+
 export default {
   register,
   login,
   me,
+  updateProfile,
+  changePassword
+
 };

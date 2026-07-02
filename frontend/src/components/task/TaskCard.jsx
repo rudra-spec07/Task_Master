@@ -13,7 +13,7 @@ const TaskCard = ({
   onDelete,
 }) => {
   return (
-    <div className="rounded-2xl border border-border bg-surface p-6 shadow-card">
+    <div className="rounded-2xl border border-border bg-surface p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
 
       <div className="flex items-start justify-between">
 
@@ -33,7 +33,7 @@ const TaskCard = ({
 
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
+      {/* <div className="mt-6 flex items-center justify-between">
 
         <div className="flex items-center gap-2 text-text-secondary">
 
@@ -43,7 +43,7 @@ const TaskCard = ({
 
         </div>
 
-      </div>
+      </div> */}
 
       <div className="mt-6 flex items-center justify-between">
 
@@ -51,20 +51,20 @@ const TaskCard = ({
 
           <Calendar size={16} />
 
-          {task.dueDate}
+         {new Date(task.dueDate).toLocaleDateString()}
 
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-2">
 
-          <button
+          <button className="rounded-lg p-2 transition hover:bg-background"
             onClick={() => onEdit(task)}
             className="transition hover:text-primary"
           >
             <Pencil size={18} />
           </button>
 
-          <button
+          <button className="rounded-lg p-2 transition hover:bg-background"
             onClick={() => onDelete(task)}
             className="transition hover:text-red-500"
           >

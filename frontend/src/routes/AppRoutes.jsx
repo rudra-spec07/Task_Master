@@ -5,6 +5,9 @@ import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
 import TasksPage from "../pages/TasksPage";
 import ProtectedRoute from "./ProtectedRoute";
+import ProfilePage from "../pages/ProfilePage";
+import AdminPage from "../pages/AdminPage";
+import AdminRoute from "./AdminRoute";
 
 const AppRoutes = () => {
   return (
@@ -41,7 +44,7 @@ const AppRoutes = () => {
   path="/profile"
   element={
     <ProtectedRoute>
-      <div>Profile</div>
+      <ProfilePage />
     </ProtectedRoute>
   }
 />
@@ -49,12 +52,11 @@ const AppRoutes = () => {
 <Route
   path="/admin"
   element={
-    <ProtectedRoute>
-      <div>Admin</div>
-    </ProtectedRoute>
+    <AdminRoute>
+      <AdminPage />
+    </AdminRoute>
   }
 />
-
     </Routes>
   );
 };

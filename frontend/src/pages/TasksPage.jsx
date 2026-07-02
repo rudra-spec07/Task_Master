@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 import taskService from "../services/task.service";
+import TaskStats from "../components/task/TaskStats";
 
 import TaskToolbar from "../components/task/TaskToolbar";
 import TaskGrid from "../components/task/TaskGrid";
@@ -72,6 +73,16 @@ const [openDelete, setOpenDelete] =
 
   return (
     <DashboardLayout>
+
+      <h1 className="mb-2 text-4xl font-bold">
+  My Tasks
+</h1>
+
+<p className="mb-8 text-text-secondary">
+  Organize. Track. Achieve.
+</p>
+
+<TaskStats tasks={tasks} />
 
       <TaskToolbar
         search={search}

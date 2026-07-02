@@ -9,6 +9,11 @@ import {
   validateLogin,
 } from "../dto/auth.dto.js";
 
+import {
+  validateUpdateProfile,
+  validateChangePassword,
+} from "../dto/profile.dto.js";
+
 const router = express.Router();
 
 router.get(
@@ -27,6 +32,20 @@ router.post(
   "/login",
   validate(validateLogin),
   authController.login
+);
+
+router.put(
+  "/profile",
+  authenticate,
+  validate(validateUpdateProfile),
+  authController.updateProfile
+);
+
+router.put(
+  "/change-password",
+  authenticate,
+  validate(validateChangePassword),
+  authController.changePassword
 );
 
 export default router;

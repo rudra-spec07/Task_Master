@@ -95,8 +95,81 @@ const getProfile = async (userId) => {
   return user;
 };
 
+
+const updateProfile = async (userId, payload) => {
+  const user = await User.findByPk(userId);
+
+  if (!user) {
+    throw new Error("User not found.");
+  }
+
+  const { name, email } = payload;
+
+  if (email !== user.email) {
+  const existingUser =
+    await User.findOne({
+      where: { email },
+    });
+
+  if (existingUser) {
+    throw new Error(
+      "Email is already in use."
+    );
+  }
+}
+
+  await user.update({
+    name,
+    email,
+  });
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
+};
+
+const changePassword = async (
+  userId,
+  payload
+) => {
+  const user = await User.findByPk(userId);
+
+  if (!user) {
+    throw new Error("User not found.");
+  }
+
+  const {
+    currentPassword,
+    newPassword,
+  } = payload;
+
+  const isMatch =
+    await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+  if (!isMatch) {
+    throw new Error(
+      "Current password is incorrect."
+    );
+  }
+
+  user.password =
+    await bcrypt.hash(newPassword, 10);
+
+  await user.save();
+
+  return null;
+};
+
 export default {
   register,
   login,
   getProfile,
+  updateProfile,
+  changePassword
 };
