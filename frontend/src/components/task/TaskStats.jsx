@@ -27,18 +27,22 @@ const TaskStats = ({ tasks }) => {
   ];
 
   return (
-    <div className="mb-8 grid gap-6 md:grid-cols-3">
-      {stats.map((stat) => (
-        <Card key={stat.title}>
-          <p className="text-sm text-text-secondary">
-            {stat.title}
-          </p>
+    <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-3">
 
-          <h2 className="mt-3 text-4xl font-bold">
+      {stats.map((stat) => (
+        <Card key={stat.title} className="flex min-h-[140px] flex-col justify-between">
+
+          <p className="min-h-[40px] text-sm text-text-secondary">
+  {stat.title}
+</p>
+
+         <h2 className="text-3xl font-bold sm:text-4xl">
             {stat.value}
           </h2>
+
         </Card>
       ))}
+
     </div>
   );
 };

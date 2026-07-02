@@ -47,7 +47,7 @@ const [openDelete, setOpenDelete] =
     setLoading(true);
 
     const data = await taskService.getTasks();
-    
+
 
     setTasks(data);
   } finally {
@@ -84,7 +84,7 @@ const [openDelete, setOpenDelete] =
   return (
     <DashboardLayout>
 
-      <h1 className="mb-2 text-4xl font-bold">
+      <h1 className="mb-2 text-3xl font-bold sm:text-4xl">
   My Tasks
 </h1>
 
