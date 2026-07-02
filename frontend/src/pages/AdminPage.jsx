@@ -7,9 +7,12 @@ import adminService from "../services/admin.service";
 import AdminStats from "../components/admin/AdminStats";
 import UserSearch from "../components/admin/UserSearch";
 import UserTable from "../components/admin/UserTable";
+import AdminSkeleton from "../components/admin/AdminSkeleton";
+
 
 const AdminPage = () => {
   const [stats, setStats] = useState(null);
+const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -18,15 +21,21 @@ const AdminPage = () => {
   }, []);
 
   const loadData = async () => {
-    const [statsData, usersData] =
-      await Promise.all([
-        adminService.getStats(),
-        adminService.getUsers(),
-      ]);
+  try {
+    setLoading(true);
+
+    const [statsData, usersData] = await Promise.all([
+      adminService.getStats(),
+      adminService.getUsers(),
+    ]);
 
     setStats(statsData);
     setUsers(usersData);
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) =>
@@ -38,6 +47,14 @@ const AdminPage = () => {
         .includes(search.toLowerCase())
     );
   }, [users, search]);
+
+  if (loading) {
+  return (
+    <DashboardLayout>
+      <AdminSkeleton />
+    </DashboardLayout>
+  );
+}
 
   return (
     <DashboardLayout>

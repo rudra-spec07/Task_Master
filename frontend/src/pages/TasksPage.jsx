@@ -11,8 +11,12 @@ import TaskCard from "../components/task/TaskCard";
 import CreateTaskModal from "../components/task/CreateTaskModal";
 import EditTaskModal from "../components/task/EditTaskModal";
 import DeleteTaskModal from "../components/task/DeleteTaskModal";
+import TaskCardSkeleton from "../components/task/TaskCardSkeleton";
+
+
 const TasksPage = () => {
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [search, setSearch] =
     useState("");
@@ -39,11 +43,17 @@ const [openDelete, setOpenDelete] =
   }, []);
 
   const loadTasks = async () => {
-    const data =
-      await taskService.getTasks();
+  try {
+    setLoading(true);
+
+    const data = await taskService.getTasks();
+    
 
     setTasks(data);
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   const filteredTasks = [...tasks]
   .filter((task) => {
@@ -93,25 +103,28 @@ const [openDelete, setOpenDelete] =
       />
 
       <TaskGrid
-        tasks={filteredTasks}
-      >
-
-        {filteredTasks.map((task) => (
-          <TaskCard
-  key={task.id}
-  task={task}
-  onEdit={(task) => {
-    setSelectedTask(task);
-    setOpenEdit(true);
-  }}
-  onDelete={(task) => {
-    setSelectedTask(task);
-    setOpenDelete(true);
-  }}
-/>
-        ))}
-
-      </TaskGrid>
+  tasks={filteredTasks}
+  loading={loading}
+>
+  {loading
+    ? [...Array(6)].map((_, index) => (
+        <TaskCardSkeleton key={index} />
+      ))
+    : filteredTasks.map((task) => (
+        <TaskCard
+          key={task.id}
+          task={task}
+          onEdit={(task) => {
+            setSelectedTask(task);
+            setOpenEdit(true);
+          }}
+          onDelete={(task) => {
+            setSelectedTask(task);
+            setOpenDelete(true);
+          }}
+        />
+      ))}
+</TaskGrid>
 
       <CreateTaskModal
   open={openCreate}

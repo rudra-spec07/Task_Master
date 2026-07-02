@@ -7,24 +7,37 @@ import authService from "../services/auth.service";
 import ProfileCard from "../components/profile/ProfileCard";
 import UpdateProfileForm from "../components/profile/UpdateProfileForm";
 import ChangePasswordForm from "../components/profile/ChangePasswordForm";
+import ProfileSkeleton from "../components/profile/ProfileSkeleton";
 
 const ProfilePage = () => {
-  const [user, setUser] =
-    useState(null);
+  const [user, setUser] = useState(null);
+const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadProfile();
   }, []);
 
   const loadProfile = async () => {
-    const data =
-      await authService.me();
+  try {
+    setLoading(true);
+
+    const data = await authService.me();
 
     setUser(data);
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
+  if (loading) {
+  return (
+    <DashboardLayout>
+      <ProfileSkeleton />
+    </DashboardLayout>
+  );
+}
 
   if (!user) return null;
-
   return (
     <DashboardLayout>
 

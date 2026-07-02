@@ -1,7 +1,11 @@
 import EmptyState from "../common/EmptyState";
 
-const TaskGrid = ({ children, tasks }) => {
-  if (!tasks.length) {
+const TaskGrid = ({
+  children,
+  tasks,
+  loading,
+}) => {
+  if (!loading && !tasks.length) {
     return (
       <EmptyState
         title="No Tasks Found"
